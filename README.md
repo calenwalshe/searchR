@@ -1,4 +1,5 @@
 # searchR
 R tools for running and analyzing human visual search models.
 
-[![Foo](https://www.calenwalshe.com/talk/cosyne2020/cosyne2020.pdf)](http://google.com.au/)
+<embed src="https://www.calenwalshe.com/talk/cosyne2020/cosyne2020.pdf" width="500" height="375" 
+ type="application/pdf">
