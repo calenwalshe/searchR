@@ -13,6 +13,7 @@ create_retinal_constants <- function(version = "standard") {
     pix_per_patch <- c(1274, 2177, 3952, 7089, 12470, 21350, 35397, 56864, 89203)
     n_patches     <- c(1, 5.776, 9.956, 12.98, 15.1, 16.5, 17.36, 17.86, 18.15)
 
+
     parameters <- list(ring_centers = ring_centers,
                        patch_radii = patch_radii,
                        pix_per_patch = pix_per_patch,
