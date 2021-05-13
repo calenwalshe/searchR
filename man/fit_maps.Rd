@@ -7,7 +7,7 @@
 fit_maps(maps_1d)
 }
 \arguments{
-\item{spacing_scalar}{}
+\item{maps_1d}{}
 }
 \value{
 

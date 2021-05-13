@@ -8,15 +8,20 @@
 #' @examples
 find_optimal_criterion <- function(model_search) {
     # add spacing at target location
-    params <- searchR::create_retinal_constants()
+    params    <- searchR::create_retinal_constants()
     spacing   <- searchR::watson_spacing(params$ring_centers, 0, binoc = 1, sp_scal = 0.943, f0 = 0)
-    patch_rad <- .5 + params$patch_radii # taken from the table of values computed in the notes.
+    offset_val <- model_search$offset[1]
+    patch_rad <- offset_val + params$patch_radii # taken from the table of values computed in the notes.
 
-    f.custom_threshold <- purrr::partial(custom_add_threshold, spacing = spacing, patch_rad = patch_rad)
+    f.custom_threshold  <- purrr::partial(custom_add_threshold, spacing = spacing, patch_rad = patch_rad)
     search_with_spacing <- model_search %>% mutate(spacing = purrr::pmap(., function(stimX, stimY, tPresent, radius, ...) {
       cent.x <- floor(1200 * radius/8)
       cent.y <- floor(1200 * radius/8)
-      spacing = ifelse(tPresent == 1, searchR::watson_spacing((stimX-cent.x)/120, (stimY-cent.y)/120, binoc = 1, sp_scal = 0.943, f0 = 0), -1)
+      spacing = ifelse(tPresent == 1, searchR::watson_spacing((stimX-cent.x)/120,
+                                                              (stimY-cent.y)/120,
+                                                              binoc = 1,
+                                                              sp_scal = 0.943,
+                                                              f0 = 0), -1)
       })) %>%
       tidyr::unnest(spacing)
 
@@ -24,7 +29,6 @@ find_optimal_criterion <- function(model_search) {
       model_import <- searchR::import_model(search_with_spacing, criterion = x)
 
       tmp_accuracy <- model_import %>%
-        #dplyr::mutate(radius = 8) %>%
         f.custom_threshold(.)
 
       tmp_accuracy$correct <- ifelse(tmp_accuracy$tPresent == "absent" & tmp_accuracy$response == "absent", 1, 0)

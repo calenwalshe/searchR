@@ -7,7 +7,7 @@
 find_optimal_criterion(model_search)
 }
 \arguments{
-\item{x}{}
+\item{model_search}{}
 }
 \value{
 

@@ -25,10 +25,10 @@ summary_search <- function(imported_search) {
   imported_search_3 <- imported_search_2 %>%
     mutate(max.radius = max(radius),
            dist.group = cut(round(dist.cent,1), include.lowest = TRUE,
-                            breaks = seq(0, max.radius[1] + .1, length.out = 6),
+                            breaks = seq(0, max.radius[1], length.out = 6),
                             labels = seq(0, max.radius[1], length.out = 5)),
            dist.group.click = cut(round(click.dist.cent,1), include.lowest = TRUE,
-                                  breaks = seq(0, max.radius[1] + .1, length.out = 6),
+                                  breaks = seq(0, max.radius[1], length.out = 6),
                                   labels = seq(0, max.radius[1], length.out = 5)),
            dist.group = ifelse(is.na(dist.group), -1, dist.group),
            dist.group.click = ifelse(is.na(dist.group.click), -1, dist.group.click)) %>%

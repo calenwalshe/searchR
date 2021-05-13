@@ -20,7 +20,7 @@ plot_full_summary <- function(response_df, parameter_label = "Intercept") {
     group_by(subject_type) %>%
     mutate(efficiency = ifelse(subject_type == "human", 1, efficiency),
            efficiency_rank = ifelse(subject_type == "human", 1, efficiency_rank),
-           sp_const = ifelse(subject_type == "human", 1, sp_const)) %>%
+           sp_const = ifelse(subject_type == "human", "1", sp_const)) %>%
     unique()
 
 
@@ -28,19 +28,19 @@ plot_full_summary <- function(response_df, parameter_label = "Intercept") {
     dplyr::select(-radius) %>%
     unnest(summarized_response)
 
-  longer_df_expand$colour <- round(longer_df_expand$sp_const, 3)
-  longer_df_expand$colour <- ifelse(longer_df_expand$subject_type == "human", -1, longer_df_expand$colour)
+  longer_df_expand$colour <- longer_df_expand$sp_const#round(longer_df_expand$sp_const, 3)
+  longer_df_expand$colour <- ifelse(longer_df_expand$subject_type == "human", "-1", longer_df_expand$colour)
   colour_vals <- viridisLite::cividis(length(unique(longer_df_expand$colour)), end = .85)
   names(colour_vals) <- sort(unique(longer_df_expand$colour))
   colour_vals[names(colour_vals) == "-1"] <- "#ff0000"
   longer_df_expand$shape <- longer_df_expand$subject
 
-  longer_df_expand$linetype <- round(longer_df_expand$sp_const,3)
+  longer_df_expand$linetype <- longer_df_expand$sp_const#round(longer_df_expand$sp_const,3)
   longer_df_expand$linetype <- ifelse(longer_df_expand$subject_type == "human", -1, longer_df_expand$linetype)
 
   longer_df_expand$subject_type <-
     paste0(longer_df_expand$subject_type, "_",
-           round(longer_df_expand$efficiency), "_", round(longer_df_expand$sp_const,3))
+           round(longer_df_expand$efficiency), "_", longer_df_expand$sp_const)
 
   longer_df_expand <- ungroup(longer_df_expand)
   try({
@@ -63,7 +63,7 @@ plot_full_summary <- function(response_df, parameter_label = "Intercept") {
                             #colour = factor(subject_type, levels = c("human", "model", "ideal"), labels = c("Human", "Model", "Ideal")))) +
     geom_point() +
     geom_line() +
-    facet_grid(rows = vars(subject = factor(subject, levels = c("rcw", "anqi"), labels = c("rcw", "az")), sample_type = factor(sample_type, levels = c("uniform", "polar"), labels = c("Uniform Sampling", "Polar Sampling"))),
+    facet_grid(rows = vars(subject = factor(subject), sample_type = factor(sample_type, levels = c("uniform", "polar"), labels = c("Uniform Sampling", "Polar Sampling"))),
                cols = vars(type = factor(type, levels = c("Hit", "Miss", "False Hit"), labels = c("Hit", "Miss", "False Hit")))) +
     theme(aspect.ratio = 1) +
     coord_cartesian(ylim = c(0, 1), xlim = c(0, 8)) +
@@ -106,7 +106,8 @@ plot_full_summary <- function(response_df, parameter_label = "Intercept") {
   })
 
   # Bar Graph Responses
-  try({fig.cr <- ggplot(longer_df_expand %>%
+  try({
+    fig.cr <- ggplot(longer_df_expand %>%
                           mutate(type = ifelse(type == "cr", "Correct Rejection", type),
                                  type = ifelse(type == "hit", "Hit", type),
                                  type = ifelse(type == "fh", "False Hit", type),
@@ -135,7 +136,8 @@ plot_full_summary <- function(response_df, parameter_label = "Intercept") {
   })
 
   # Bar Graph Responses
-  try({fig.pc <- ggplot(longer_df_expand %>%
+  try({
+    fig.pc <- ggplot(longer_df_expand %>%
                           filter(type %in% c("hit", "cr")) %>%
                           mutate(type = ifelse(type == "cr", "Correct Rejection", type),
                                  type = ifelse(type == "hit", "Hit", type)) %>%
@@ -163,10 +165,10 @@ plot_full_summary <- function(response_df, parameter_label = "Intercept") {
   # gain_maps
   try({
     gain_map <- response_df %>%
-      dplyr::select(sp_const, efficiency, map_prior, subject, scale.dist, optimal_criterion, data) %>% unnest(data) %>%
+      dplyr::select(sp_const, efficiency, map_prior, subject, scale.dist, label, optimal_criterion, data) %>% unnest(data) %>%
       mutate(scaled_dprime = y.scale * y.dprime)
 
-    gain_map$colour <- as.character(round(gain_map$sp_const, 3))
+    gain_map$colour <- gain_map$sp_const
 
     colour_vals_gain <- colour_vals[names(colour_vals) != "human"]
 

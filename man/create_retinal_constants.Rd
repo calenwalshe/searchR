@@ -7,7 +7,7 @@
 create_retinal_constants(version = "standard")
 }
 \arguments{
-\item{scale.dist}{}
+\item{version}{}
 }
 \value{
 

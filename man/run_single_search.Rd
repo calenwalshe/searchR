@@ -12,7 +12,8 @@ run_single_search(
   radius,
   priorType,
   search_params,
-  seed_val = 1
+  seed_val = 1,
+  single_thread = FALSE
 )
 }
 \arguments{

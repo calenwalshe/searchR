@@ -7,7 +7,7 @@
 store_maps_disk(file_id, maps_2d_lst)
 }
 \arguments{
-\item{maps_2d_lst}{}
+\item{file_id}{}
 }
 \value{
 

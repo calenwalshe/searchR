@@ -7,7 +7,7 @@
 plot_full_summary(response_df, parameter_label = "Intercept")
 }
 \arguments{
-\item{response_df}{}
+\item{parameter_label}{}
 }
 \value{
 

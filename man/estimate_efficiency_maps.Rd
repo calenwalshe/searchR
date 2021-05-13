@@ -10,7 +10,7 @@ estimate_efficiency_maps(
 )
 }
 \arguments{
-\item{map_parameters}{}
+\item{optim_params}{}
 }
 \value{
 

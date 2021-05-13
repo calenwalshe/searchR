@@ -14,9 +14,9 @@ fit_maps <- function(maps_1d) {
   # Perform the interpolation on spacing in parallel for speed
   n_row <- length(maps_1d)
 
-  interpolated_maps <- parallel::mclapply(1:n_row, FUN = function(x) {
+  interpolated_maps <- lapply(1:n_row, FUN = function(x) {
     interpolate_single_map(maps_1d[[x]]$c_deg, maps_1d[[x]]$y.scale, dist.mat$cdeg)
-  }, mc.cores = 16)
+  })
 
   return(interpolated_maps)
 }

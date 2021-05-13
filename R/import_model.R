@@ -8,7 +8,6 @@
 #'
 #' @examples
 import_model <- function(data, criterion = 0) {
-
   rename  <- dplyr::rename
 
   bgScale <- 8 / data$radius[1] # df must contain a radius value.
